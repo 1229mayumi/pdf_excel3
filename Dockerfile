@@ -8,9 +8,9 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Tesseractをインストール
+# Tesseractとpoppler-utilsをインストール
 RUN apt-get update && \
-    apt-get install -y tesseract-ocr && \
+    apt-get install -y tesseract-ocr poppler-utils && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
