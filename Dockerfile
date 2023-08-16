@@ -5,7 +5,6 @@ WORKDIR /app
 # 依存関係のインストール
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
-
 # アプリケーションのコピー
 COPY new_env /app/new_env
 COPY src /app/src
