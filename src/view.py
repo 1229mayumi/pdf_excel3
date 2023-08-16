@@ -28,11 +28,15 @@ def upload_file():
     # ファイルのアップロードに成功したとき表示する
     return "ファイルがアップロードされました。"
 
+from pathlib import Path
+
+# ファイルパスを定義
+FILE_PATH = "/app/ocr_result.txt"
+
 # OCR1ボタンが押された時の挙動
 @app.route('/ocr1', methods=['POST'])
 # ocr1という関数を定義（/ocr1へのPOSTリクエストがあった際(ocr1ボタンが押された時）に実行する）
 def ocr1():
-    global ocr_result
     
     outpdfpass="./tmp.pdf"
     pdf = request.files['file']
@@ -54,24 +58,11 @@ def ocr1():
         text += pytesseract.image_to_string(image)
         
     # OCR処理が終了した後、結果をテキストファイルとして保存
-    with open("ocr_result.txt", "w", encoding="utf-8") as file:
+    with open(FILE_PATH, "w", encoding="utf-8") as file:
         file.write(text)
+    # 絶対パスをプリント
+    print(f"ocr_result.txt has been saved at {FILE_PATH}")
     
-    # # textに追加された文字列を改行('\n')で分割して、その結果をpandasのDataFrameに変換
-    # df = pd.DataFrame([text.split('\n')])
-
-    # # BytesIO（バイトデータを扱うためのオブジェクト）オブジェクトを作成。直後の行でエクセルファイルを書き込むために使用。
-    # excel_file = io.BytesIO()
-    
-    # # 書き込み先は'excel_file'、エンジンとして'xlsxwriter：Excelの.xlsxファイルを書き込むためのライブラリ'を指定、indexは書き込まない
-    # df.to_excel(excel_file, engine='xlsxwriter', index=False)
-    # excel_file.seek(0)
-    
-    # # 抽出したデータをグローバル変数'ocr_result'に保存
-    # ocr_result = text 
-
-    print(f"ocr_result.txt has been saved at {FILE_PATH}")  # 絶対パスをプリント
-
     os.remove(outpdfpass) 
     
     return "OCR処理は正常に終了しました。"
